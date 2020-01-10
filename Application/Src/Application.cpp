@@ -1,6 +1,6 @@
 #include <Empaerior.h>
 #include <main.h>
-
+#include "Cards.h"
 //An example of what a application might look like
 
 //a user defined state
@@ -16,17 +16,19 @@ public:
 		ecs.register_component<Empaerior::Camera_Component>();
 		ecs.register_component<Empaerior::Sprite_Component>();
 		ecs.register_component<Empaerior::Event_Listener_Component>();
-
+		ecs.register_component<Card_component>();
 
 		spr_system = ecs.register_system <Sprite_System>();
 		event_system = ecs.register_system<Event_System>();
-
-
+		spr_cards = ecs.register_system<Card_System>();
 
 
 		ecs.add_component_to_system<Empaerior::Sprite_Component, Sprite_System>();
 		ecs.add_component_to_system<Empaerior::Event_Listener_Component, Event_System>();
+		ecs.add_component_to_system<Card_component, Card_System>();
 
+		spr_cards->load_assets();
+		spr_cards->load_board(ecs);
 
 
 	}
@@ -59,9 +61,6 @@ public:
 			Empaerior::Application::cur_state->get_camera().set_position(Empaerior::Application::cur_state->get_camera().rect.x + 10, Empaerior::Application::cur_state->get_camera().rect.y);
 		}
 
-		Empaerior::v_pair<Empaerior::s_int, Empaerior::s_int> m_p = Empaerior::get_screen_mouse_coords();
-		
-		ENGINE_INFO("mouse coordinates: " + std::to_string(m_p.first) + ' ' + std::to_string(m_p.second) + '\n');
 
 		spr_system->update(ecs, dt);
 	}
@@ -78,7 +77,7 @@ public:
 	}
 
 private:
-	
+	std::shared_ptr<Card_System> spr_cards;
 	std::shared_ptr<Sprite_System> spr_system;
 	std::shared_ptr<Event_System> event_system;
 
