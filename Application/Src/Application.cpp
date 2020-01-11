@@ -46,10 +46,16 @@ public:
 		ecs.add_component_to_system<Empaerior::Sprite_Component, Sprite_System>();
 		ecs.add_component_to_system<Empaerior::Event_Listener_Component, Event_System>();
 		ecs.add_component_to_system<Card_component, Card_System>();
-
+		ecs.add_component_to_system<T_E_Component, T_E_System>();
 		card_system->load_assets();
 		card_system->load_board(ecs);
 
+
+		//add background
+		ecs.add_component<Empaerior::Sprite_Component>(card_system->background, {});
+		spr_system->add_sprite(ecs, card_system->background, { 0,0,960,800 }, { 0,0,1,1 }, "assets/background.png", 1);
+		
+		spr_system->set_color(ecs, card_system->background, 0, 0, 200, 200);
 
 		//add components to all cards 
 		for (int i = 0; i < 8; i++)

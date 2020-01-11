@@ -28,7 +28,8 @@ public:
 	int revealed_j;
 	uint64_t revealed_id = -1;
 	uint64_t board[8][8];
-	
+	bool is_done[8][8];
+	uint64_t background;
 
 	//if od the card to the path of the texture;
 	std::unordered_map<Empaerior::u_inter, Empaerior::string> id_to_path;
