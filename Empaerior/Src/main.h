@@ -16,8 +16,6 @@
 
 #include "SDLwrappers/SDL_Wrappers.h"
 #include "exceptions/Exceptions.h"
-#include "utilities/Utilities.h"
-#include  "utilities/Timer.h"
 
 
 //static objects variables

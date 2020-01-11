@@ -6,5 +6,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Cards.h" />
+    <ClInclude Include="Src\Timer_Execution_Component.h" />
   </ItemGroup>
 </Project>

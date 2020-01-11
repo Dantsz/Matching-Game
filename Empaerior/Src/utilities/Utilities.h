@@ -6,7 +6,7 @@
 namespace Empaerior
 {
 	//clipboard functions
-	Empaerior::string get_clipboard_text()
+	inline Empaerior::string get_clipboard_text()
 	{
 		if (SDL_HasClipboardText())//if there's text
 		{
@@ -17,7 +17,7 @@ namespace Empaerior
 		}
 		return "";
 	}
-	void set_clipboard_text(const char* text)
+	inline void set_clipboard_text(const char* text)
 	{
 		try
 		{
@@ -36,7 +36,7 @@ namespace Empaerior
 
 
 	//system functions
-	Empaerior::string get_platform()//gets the current platform
+	inline Empaerior::string get_platform()//gets the current platform
 	{
 		const char* sdl_platform = SDL_GetPlatform();
 		Empaerior::string e_platform = sdl_platform;
@@ -45,24 +45,24 @@ namespace Empaerior
 
 	}
 
-	int cpu_cache_size()//returns the size of the cpu  cache in bytes
+	inline int cpu_cache_size()//returns the size of the cpu  cache in bytes
 	{
 		return SDL_GetCPUCacheLineSize();
 	}
 
-	int get_core_number()// get the number of CPU cores available
+	inline int get_core_number()// get the number of CPU cores available
 	{
 		return SDL_GetCPUCount();
 	}
 
-	int get_system_ram()//get the amount of RAM configured in the system.
+	inline 	int get_system_ram()//get the amount of RAM configured in the system.
 	{
 		return SDL_GetSystemRAM();
 	}
 
 
 	//returns the coordnitaes of the mouse relative to the screen
-	Empaerior::v_pair<Empaerior::s_int, Empaerior::s_int> get_screen_mouse_coords()
+	inline Empaerior::v_pair<Empaerior::s_int, Empaerior::s_int> get_screen_mouse_coords()
 	{
 		v_pair<Empaerior::s_int, Empaerior::s_int> pos;
 		SDL_GetMouseState(&pos.first, &pos.second);
@@ -71,17 +71,17 @@ namespace Empaerior
 
 
 	//gets the coordinates of the mouse based on where the camera is
-	Empaerior::v_pair<Empaerior::s_int,Empaerior::s_int> get_world_mouse_coords(const Empaerior::Camera& camera)
+	inline  Empaerior::v_pair<Empaerior::s_int,Empaerior::s_int> get_world_mouse_coords(const Empaerior::Camera& camera)
 	{
 		//get the positions
 		v_pair<Empaerior::s_int, Empaerior::s_int> pos;
 		SDL_GetMouseState(&pos.first, &pos.second);
 
-
+		
 		//Transform the position relative to the camera
 		pos.first *= camera.rect.w;
 		pos.second *= camera.rect.h;
-
+		
 
 
 		pos.first /= Application::window.get_width();

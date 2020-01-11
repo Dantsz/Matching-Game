@@ -22,11 +22,16 @@
 #include "entitysystem/system/systems/Systems.h"
 #include "entitysystem/components/Component.h"
 
+#include "utilities/Utilities.h"
+#include  "utilities/Timer.h"
+
+
 #include "graphics/rendering/Window.h"
 #include "graphics/rendering/Camera.h"
 #include "graphics/rendering/objects/Sprite.h"
 
 #include "eventhandler/EventHandler.h"
+
 
 #ifdef EMP_USE_LOGS
 
