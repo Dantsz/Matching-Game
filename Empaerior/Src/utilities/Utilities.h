@@ -1,103 +1,76 @@
 #pragma once
-#include <SDL.h>
+
 #include <string>
 #include <iostream>
 #include <Empaerior.h>
+#include <cmath>
 namespace Empaerior
 {
-	//clipboard functions
-	inline Empaerior::string get_clipboard_text()
-	{
-		if (SDL_HasClipboardText())//if there's text
+	namespace Utilities {
+		//clipboard functions
+		Empaerior::string get_clipboard_text();
+
+		void set_clipboard_text(const char* text);
+
+
+
+
+		//system functions
+		inline Empaerior::string get_platform()//gets the current platform
 		{
-			char* sdl_text = SDL_GetClipboardText();//get the clipboard content as char*
-			Empaerior::string clip_text = sdl_text;//transfom  the char* into a Empaerior::string
-			SDL_free(sdl_text);//free the char*
-			return clip_text;//return a string
+			const char* sdl_platform = SDL_GetPlatform();
+			Empaerior::string e_platform = sdl_platform;
+			SDL_free((void*)sdl_platform);
+			return e_platform;
+
 		}
-		return "";
-	}
-	inline void set_clipboard_text(const char* text)
-	{
-		try
+
+		inline int cpu_cache_size()// returns the size of the cpu  cache in bytes
 		{
-			if (SDL_SetClipboardText(text) < 0)
-			{
-				throw E_runtime_exception("Cannot copy text to clipboard", __FILE__, __LINE__, __FUNCTION__);
-			}
+			return SDL_GetCPUCacheLineSize();
 		}
-		catch (E_runtime_exception & e) {
-
-			e.print_message();
-			return;
+		
+		inline int get_core_number()// get the number of CPU cores available
+		{
+			return SDL_GetCPUCount();
 		}
-	}
+		inline int get_system_ram()//get the amount of RAM configured in the system.
+		{
+			return SDL_GetSystemRAM();
+		}
 
-
-
-	//system functions
-	inline Empaerior::string get_platform()//gets the current platform
-	{
-		const char* sdl_platform = SDL_GetPlatform();
-		Empaerior::string e_platform = sdl_platform;
-		SDL_free((void*)sdl_platform);
-		return e_platform;
-
-	}
-
-	inline int cpu_cache_size()//returns the size of the cpu  cache in bytes
-	{
-		return SDL_GetCPUCacheLineSize();
-	}
-
-	inline int get_core_number()// get the number of CPU cores available
-	{
-		return SDL_GetCPUCount();
-	}
-
-	inline 	int get_system_ram()//get the amount of RAM configured in the system.
-	{
-		return SDL_GetSystemRAM();
-	}
-
-
-	//returns the coordnitaes of the mouse relative to the screen
-	inline Empaerior::v_pair<Empaerior::s_int, Empaerior::s_int> get_screen_mouse_coords()
-	{
-		v_pair<Empaerior::s_int, Empaerior::s_int> pos;
-		SDL_GetMouseState(&pos.first, &pos.second);
-		return pos;
-	}
-
-
-	//gets the coordinates of the mouse based on where the camera is
-	inline  Empaerior::v_pair<Empaerior::s_int,Empaerior::s_int> get_world_mouse_coords(const Empaerior::Camera& camera)
-	{
-		//get the positions
-		v_pair<Empaerior::s_int, Empaerior::s_int> pos;
-		SDL_GetMouseState(&pos.first, &pos.second);
 
 		
-		//Transform the position relative to the camera
-		pos.first *= camera.rect.w;
-		pos.second *= camera.rect.h;
-		
+
+	
+
+	
 
 
-		pos.first /= Application::window.get_width();
-		pos.second /= Application::window.get_heigth();
 
-		pos.first += camera.rect.x;
-		pos.second += camera.rect.y;
+		//returns the coordinates of the mouse relative to the screen
+		Empaerior::v_pair<Empaerior::fl_point, Empaerior::fl_point> get_screen_mouse_coords();
 
 
-		return pos;
-	}
+		//gets the coordinates of the mouse based on where the camera is
+		Empaerior::v_pair<Empaerior::fl_point, Empaerior::fl_point> get_world_mouse_coords(const Empaerior::Camera& camera);
+
+
+
+
+		//check if a rect contains a point
+		Empaerior::boole rect_contains_point(const Empaerior::Rect& rect, Empaerior::fl_point x , Empaerior::fl_point y);
 
 
 
 	
+		
 
+
+
+	}
+
+	
 
 
 

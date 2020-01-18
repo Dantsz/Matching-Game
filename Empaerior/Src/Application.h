@@ -30,7 +30,7 @@ public:
 	virtual void run() = 0;
 
 
-	virtual void handlevents(const SDL_Event& event);
+	virtual void handlevents(Empaerior::Event& event);
     virtual void Update(const unsigned int& dt);
 	
 
@@ -48,11 +48,11 @@ public:
 	
 	static Empaerior::Window window;
 
-	static const Empaerior::u_s_int dt;
+	static const Empaerior::u_int dt;
 	
 	static bool is_paused;
 	static bool is_running;
-	static SDL_Event event;
+	static Empaerior::Event event;
 
 private:
 

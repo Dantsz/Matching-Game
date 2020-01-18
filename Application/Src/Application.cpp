@@ -31,20 +31,19 @@ public:
 		camera = { 0,0,960,800 };
 		
         ecs.Init();
-		ecs.register_component<Empaerior::Position_Component>();
 		ecs.register_component<Empaerior::Camera_Component>();
 		ecs.register_component<Empaerior::Sprite_Component>();
 		ecs.register_component<Empaerior::Event_Listener_Component>();
 		ecs.register_component<Card_component>();
 		ecs.register_component<T_E_Component>();
 
-		spr_system = ecs.register_system <Sprite_System>();
-		event_system = ecs.register_system<Event_System>();
+		spr_system = ecs.register_system <Empaerior::Sprite_System>();
+		event_system = ecs.register_system<Empaerior::Event_System>();
 		card_system = ecs.register_system<Card_System>();
 		f_timed_system = ecs.register_system<T_E_System>();
 
-		ecs.add_component_to_system<Empaerior::Sprite_Component, Sprite_System>();
-		ecs.add_component_to_system<Empaerior::Event_Listener_Component, Event_System>();
+		ecs.add_component_to_system<Empaerior::Sprite_Component, Empaerior::Sprite_System>();
+		ecs.add_component_to_system<Empaerior::Event_Listener_Component, Empaerior::Event_System>();
 		ecs.add_component_to_system<Card_component, Card_System>();
 		ecs.add_component_to_system<T_E_Component, T_E_System>();
 		card_system->load_assets();
@@ -69,13 +68,13 @@ public:
 
 				//add sprite
 				
-				spr_system->add_sprite(ecs, card_system->board[i][j], { 224 + 64 * i,96 * j,64,96 }, { 0,0,140,190 }, card_system->id_to_path[ecs.get_component<Card_component>(card_system->board[i][j]).type], 1);
-				spr_system->add_sprite(ecs, card_system->board[i][j], { 224 + 64 * i,96 * j,64,96 }, { 0,0,140,190 }, "assets/card_back.png", 1);
+				spr_system->add_sprite(ecs, card_system->board[i][j], { Empaerior::fl_point(224 + 64 * i), Empaerior::fl_point(96 * j),64,96 }, { 0,0,140,190 }, card_system->id_to_path[ecs.get_component<Card_component>(card_system->board[i][j]).type], 1);
+				spr_system->add_sprite(ecs, card_system->board[i][j], { Empaerior::fl_point(224 + 64 * i), Empaerior::fl_point(96 * j),64,96 }, { 0,0,140,190 }, "assets/card_back.png", 1);
 				//add events on mouse down
 				event_system->add_event_to_entity(ecs, card_system->board[i][j], SDL_MOUSEBUTTONDOWN, 
-					[&Ecs = ecs ,&Spr_system = spr_system,&Card_system = card_system,&F_timed_system = f_timed_system,entity = card_system->board[i][j] , &kamera = camera, x = j, y = i](SDL_Event const& event)
+					[&Ecs = ecs ,&Spr_system = spr_system,&Card_system = card_system,&F_timed_system = f_timed_system,entity = card_system->board[i][j] , &kamera = camera, x = j, y = i](Empaerior::Event const& event)
 					{
-					auto mpos = Empaerior::get_world_mouse_coords(kamera);
+					auto mpos = Empaerior::Utilities::get_world_mouse_coords(kamera);
 					
 						if (rect_contains_point(Ecs.get_component<Empaerior::Sprite_Component>(entity).sprites[0].get_dimensions(),mpos.first,mpos.second))
 						{
@@ -94,7 +93,7 @@ public:
 
 	}
 
-	void Update(const Empaerior::u_s_int& dt)override
+	void Update(const Empaerior::u_int& dt)override
 	{
 		unsigned char const* keys = SDL_GetKeyboardState(nullptr);
 		if (keys[SDL_SCANCODE_UP])
@@ -132,15 +131,15 @@ public:
 		spr_system->render(ecs,camera);
 	
 	}
-	virtual void handleevents(const SDL_Event& event) override
+	virtual void handleevents(Empaerior::Event& event) override
 	{
 		event_system->handle_events(ecs, event);
 	}
 
 private:
 	std::shared_ptr<Card_System> card_system;
-	std::shared_ptr<Sprite_System> spr_system;
-	std::shared_ptr<Event_System> event_system;
+	std::shared_ptr<Empaerior::Sprite_System> spr_system;
+	std::shared_ptr<Empaerior::Event_System> event_system;
 	std::shared_ptr<T_E_System> f_timed_system;
 };
 
@@ -169,10 +168,10 @@ public:
 
 	void run() override
 	{
-		Empaerior::u_s_int framestart = 0;
-		Empaerior::u_s_int frametime = 0;
-		Empaerior::u_s_int currentime = 0;
-		Empaerior::u_s_int acumulator = 0;
+		Empaerior::s_int framestart = 0;
+		Empaerior::s_int frametime = 0;
+		Empaerior::s_int currentime = 0;
+		Empaerior::s_int acumulator = 0;
 
 		while (Empaerior::Application::is_running)
 		{
@@ -182,7 +181,7 @@ public:
 
 
 	
-			while (SDL_PollEvent(&Empaerior::Application::event)) {
+			while (SDL_PollEvent(&Empaerior::Application::event.event)) {
 
 				handlevents(Empaerior::Application::event);
 
@@ -235,7 +234,7 @@ public:
 	}
 
 
-	void handlevents(const SDL_Event& event) override
+	void handlevents(Empaerior::Event& event) override
 	{
 		Empaerior::Application::window.window_listener.handleEvents(event);
 		cur_state->handleevents(event);

@@ -25,7 +25,7 @@ public:
 	}
 
 #define component ecs.get_component<T_E_Component>(id)
-	void Update(Empaerior::ECS& ecs, const Empaerior::u_s_int& dt)
+	void Update(Empaerior::ECS& ecs, const Empaerior::u_int& dt)
 	{
 		for (auto& id : entities_id)
 		{

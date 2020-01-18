@@ -6,8 +6,8 @@ namespace Empaerior {
 	class Graphic_element
 	{
 	public:
-		Graphic_element(const SDL_Rect& rect)
-			:rect(rect)
+		Graphic_element(const Float_Rect& rect, const fl_point& angle)
+			:rect({rect, angle})
 			// the size of the rect is only for one frame of the sprite
 			// so the length of the texture should be frames * tex_rect.w
 		{
@@ -24,23 +24,28 @@ namespace Empaerior {
 
 		}
 		virtual void draw(const Camera& camera) { };
-		virtual void update(const Empaerior::u_s_int& dt) {
+		virtual void update(const Empaerior::u_int& dt) {
 		
 		};
-		void set_angle(const double& newAngle)
+		
+		void set_angle(const Empaerior::fl_point& newAngle)
 		{
-			angle = newAngle;
+			rect.angle = newAngle;
 		}
-		void set_position(const Empaerior::s_int& x, const Empaerior::s_int& y)
+		void set_position(const Empaerior::fl_point& x, const Empaerior::fl_point& y)
 		{
-			rect.x = x;
-			rect.y = y;
+			rect.dimensions.x = x;
+			rect.dimensions.y = y;
 			return;
 		}
 		SDL_Rect get_dimensions()
 		{
-			return rect;
+			SDL_Rect dim = { int(rect.dimensions.x) , int(rect.dimensions.y) , int(rect.dimensions.w) , int(rect.dimensions.h)};
+			return dim;
 		}
+
+
+
 	protected:
 
 
@@ -49,9 +54,9 @@ namespace Empaerior {
 
 	protected:
 
-		SDL_Rect rect; // the sprite
+		Empaerior::Rect rect; // the sprite
 
-		double angle = 0; // rotation fo the element
+		 // rotation fo the element
 
 
 	};
@@ -68,7 +73,7 @@ namespace Empaerior {
 
 		// the size of the rect is only for one frame of the sprite
 		// so the length of the texture should be frames * tex_rect.w
-		void Init(const SDL_Rect& m_rect, const SDL_Rect& m_tex_rect, const Empaerior::string& tex_path, const unsigned int& m_frames);
+		void Init(const Empaerior::Rect& m_rect, const Empaerior::Int_Rect& m_tex_rect, const Empaerior::string& tex_path, const Empaerior::byte& m_frames);
 		//sets a new texture instead of the old one
 		//rect , animation  and position doesn't change
 		void set_texture(const Empaerior::string& tex_path)
@@ -93,7 +98,7 @@ namespace Empaerior {
 
 		void draw(const Camera& camera) override;
 
-		void update(const Empaerior::u_s_int& dt)
+		void update(const Empaerior::u_int& dt)
 		{
 			time += dt; // add the time passed
 
@@ -106,8 +111,8 @@ namespace Empaerior {
 
 
 		}
-
-	
+		//gets the dimesnions of the sprite
+		Empaerior::Rect const& get_rect();
 		
 		
 
@@ -133,11 +138,11 @@ namespace Empaerior {
 
 
 
-		SDL_Rect tex_rect;// the portion of the texture the sprite represents
-		Empaerior::u_s_int anim_x = 0, anim_y = 0;//the unaltered positions of the texture with the initial position 
+		Empaerior::Int_Rect tex_rect;// the portion of the texture the sprite represents
+		Empaerior::u_int anim_x = 0, anim_y = 0;//the unaltered positions of the texture with the initial position 
 		
-		Empaerior::u_s_int time = 0;
-		static constexpr Empaerior::u_s_int holdTime = 250; //time between animations currently 0.25 seconds
+		Empaerior::u_int time = 0;
+		static constexpr Empaerior::u_int holdTime = 250; //time between animations currently 0.25 seconds
 
 		Empaerior::byte frames = 1; //each animation must have at least one frame
 		Empaerior::byte cur_frame = 0;
@@ -153,14 +158,14 @@ namespace Empaerior {
 
 	};
 
-
+	//TODO : ANGLE THE WHOLE TEXTURE
 	class Text_Sprite : public Graphic_element
 	{
 	public:
 		
 
 
-		void Init(const SDL_Rect& rect, const Empaerior::string& font_path, const unsigned int& size, const Empaerior::string& message, SDL_Color& color);
+		void Init(const Empaerior::Rect& rect, const Empaerior::string& font_path, const unsigned int& size, const Empaerior::string& message, Empaerior::Color& color);
 		
 		// load the font and load the texture
 
@@ -178,7 +183,7 @@ namespace Empaerior {
 
 
 		void draw(const Camera& camera);
-		void update(const Empaerior::u_s_int& dt) {};
+		void update(const Empaerior::u_int& dt) {};
 
 
 	public:

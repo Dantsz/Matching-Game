@@ -19,7 +19,7 @@ public:
 	
 	
 	//reveal a card
-	void Reveal(Empaerior::ECS& ecs, std::shared_ptr<Sprite_System>& spr_system, std::shared_ptr<T_E_System>& f_system, const Empaerior::u_inter& id, Empaerior::u_inter x, Empaerior::u_inter y);
+	void Reveal(Empaerior::ECS& ecs, std::shared_ptr<Empaerior::Sprite_System>& spr_system, std::shared_ptr<T_E_System>& f_system, const Empaerior::u_inter& id, Empaerior::u_inter x, Empaerior::u_inter y);
 
 
 	//if a card is revealed

@@ -23,11 +23,11 @@ namespace Empaerior {
 
 		};
 
-		virtual void Update(const Empaerior::u_s_int& dt) = 0;
+		virtual void Update(const Empaerior::u_int& dt) = 0;
 		virtual void Render() = 0 ;//renders the state
-		virtual void handleevents(const SDL_Event& event) = 0;
+		virtual void handleevents(Empaerior::Event& event) = 0;
 
-		void set_camera(const SDL_Rect& rect);//sets the camera to the specified sdl rect
+		void set_camera(const Empaerior::Int_Rect& rect);//sets the camera to the specified sdl rect
 		
 		Empaerior::Camera& get_camera() { return camera; } // return the camera
 

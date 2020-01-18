@@ -53,6 +53,9 @@
     <ClInclude Include="src\SDLwrappers\Ptr_Wrappers.h">
       <Filter>SDLwrappers</Filter>
     </ClInclude>
+    <ClInclude Include="src\SDLwrappers\Rendering_Wrappers.h">
+      <Filter>SDLwrappers</Filter>
+    </ClInclude>
     <ClInclude Include="src\SDLwrappers\SDL_Wrappers.h">
       <Filter>SDLwrappers</Filter>
     </ClInclude>
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\utilities\Math.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\utilities\Timer.h">
       <Filter>utilities</Filter>
     </ClInclude>
@@ -119,6 +125,9 @@
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\assetmanager\AssetManager.cpp">
       <Filter>assetmanager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debugging\Log.cpp">
+      <Filter>debugging</Filter>
     </ClCompile>
     <ClCompile Include="src\eventhandler\EventHandler.cpp">
       <Filter>eventhandler</Filter>
@@ -136,11 +145,14 @@
       <Filter>graphics\rendering\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\utilities\Math.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
     <ClCompile Include="src\utilities\Timer.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Src\debugging\Log.cpp">
-      <Filter>debugging</Filter>
+    <ClCompile Include="src\utilities\Utilities.cpp">
+      <Filter>utilities</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

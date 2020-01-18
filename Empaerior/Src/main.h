@@ -1,21 +1,16 @@
 #pragma once
 
+
+
 #include "pch.h"
-
-
-
-
-
-#define SDL_MAIN_HANDLED
-
-//
-
 
 #include "Empaerior.h"
 
 
 #include "SDLwrappers/SDL_Wrappers.h"
 #include "exceptions/Exceptions.h"
+#include "utilities/Utilities.h"
+#include  "utilities/Timer.h"
 
 
 //static objects variables
@@ -31,10 +26,10 @@ std::unordered_map<Empaerior::string, std::unique_ptr<Mix_Chunk>> Sounds;
 Empaerior::State* Empaerior::Application::cur_state;
 std::vector <Empaerior::State*> Empaerior::Application::states;
 //time between frames
-const Empaerior::u_s_int Empaerior::Application::dt = 1000 / 60;
+const Empaerior::u_int Empaerior::Application::dt = 1000 / 60;
 bool Empaerior::Application::is_paused = 0;
 bool Empaerior::Application::is_running = 1;
-SDL_Event Empaerior::Application::event;
+Empaerior::Event Empaerior::Application::event;
 Empaerior::Window Empaerior::Application::window;
 
 
@@ -44,6 +39,8 @@ Empaerior::Window Empaerior::Application::window;
 
 extern Empaerior::Application* Empaerior::Create_Application();
 //THIS IS THE ENTRY POINT 
+
+#define SDL_MAIN_HANDLED
 int main(int argc, char** argv)
 {
 

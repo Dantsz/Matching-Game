@@ -3,9 +3,9 @@
 #include "../../../Application.h"
 #include "../../glyphs/Glyphs.h"
 #include "../Window.h"
+#include "SDLwrappers/Rendering_Wrappers.h"
 
-
-void Empaerior::Sprite::Init(const SDL_Rect& m_rect, const SDL_Rect& m_tex_rect, const Empaerior::string& tex_path, const unsigned int& m_frames)
+void Empaerior::Sprite::Init(const Empaerior::Rect& m_rect, const Empaerior::Int_Rect& m_tex_rect, const Empaerior::string& tex_path, const  Empaerior::byte& m_frames)
 {
 	rect = m_rect;
 	tex_rect = m_tex_rect;
@@ -15,27 +15,34 @@ void Empaerior::Sprite::Init(const SDL_Rect& m_rect, const SDL_Rect& m_tex_rect,
 
 }
 
+
+//TODO: change to use float in rendering
 void Empaerior::Sprite::draw(const Camera& camera)
 {
-	SDL_Rect position_rect = {rect.x - camera.rect.x,rect.y - camera.rect.y,rect.w,rect.h };
+	Empaerior::Float_Rect position_rect = {rect.dimensions.x - camera.rect.x,rect.dimensions.y - camera.rect.y,rect.dimensions.w,rect.dimensions.h };
 	if (texture != nullptr)
 	{
 		//setting the texture's color, because each sprite that uses the texture uses it differently (or not)
 		SDL_SetTextureColorMod(texture.get(), r, g, b);//Safe/acceptable to call SDL_SetTextureColorMod a lot?
 		//render it
-		SDL_RenderCopyEx(Application::window.renderer, &(*texture), &tex_rect, &position_rect, angle, NULL, SDL_FLIP_NONE);
+		Empaerior::Render::RenderEx(Application::window.renderer, &(*texture), &tex_rect, &position_rect, rect.angle, NULL, SDL_FLIP_NONE);
 	}
+	
+}
+Empaerior::Rect const& Empaerior::Sprite::get_rect()
+{  
+	return rect;
 }
 void Empaerior::Text_Sprite::draw(const Camera& camera)
 {
 	 
-	if(!glyphs.empty())renderLine(text_values, rect.x, rect.y , glyphs, Application::window.renderer, rect.w, rect.h,angle,camera.rect.x,camera.rect.y);
+	if(!glyphs.empty())renderLine(text_values, rect.dimensions.x, rect.dimensions.y , glyphs, Application::window.renderer, rect.dimensions.w, rect.dimensions.h,rect.angle,camera.rect.x,camera.rect.y);
 
 }
 
 
 
-void Empaerior::Text_Sprite::Init(const SDL_Rect& m_rect, const Empaerior::string& font_path, const unsigned int& size, const Empaerior::string& message, SDL_Color& color)
+void Empaerior::Text_Sprite::Init(const Empaerior::Rect& m_rect, const Empaerior::string& font_path, const unsigned int& size, const Empaerior::string& message, Empaerior::Color& color)
 {
 	rect = m_rect;
 	if (createGlyphs(this->glyphs, font_path, size, Application::window.renderer, color) != -1)// create glyphs
